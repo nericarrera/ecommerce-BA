@@ -1,72 +1,303 @@
-/* App.css - Estilos base para la aplicación */
+:root {
+  font-family: 'Inter', 'Segoe UI', system-ui, -apple-system, sans-serif;
+  line-height: 1.6;
+  font-weight: 400;
 
+  /* Paleta de colores futurista */
+  --color-bg-primary: #0f172a;
+  --color-bg-secondary: #1e293b;
+  --color-bg-tertiary: #334155;
+  --color-accent-cyan: #78dbe2;
+  --color-accent-pink: #ff77b8;
+  --color-accent-purple: #667eea;
+  --color-text-primary: #e2e8f0;
+  --color-text-secondary: #cbd5e1;
+  --color-text-muted: #94a3b8;
+  
+  color-scheme: dark light;
+  color: var(--color-text-primary);
+  background-color: var(--color-bg-primary);
+
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Reset y base */
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
 }
 
-body {
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  background-color: #0f172a;
-  color: #e2e8f0;
-  line-height: 1.6;
+a {
+  font-weight: 500;
+  color: var(--color-accent-cyan);
+  text-decoration: none;
+  transition: all 0.3s ease;
 }
 
-/* Utilidades para el diseño futurista */
+a:hover {
+  color: var(--color-accent-pink);
+  text-shadow: 0 0 10px rgba(255, 119, 184, 0.5);
+}
+
+body {
+  background: linear-gradient(135deg, var(--color-bg-primary) 0%, var(--color-bg-secondary) 50%, var(--color-bg-tertiary) 100%);
+  margin: 0;
+  padding-top: 80px;
+  min-height: 100vh;
+  min-width: 320px;
+  overflow-x: hidden;
+}
+
+/* Contenedor principal */
+#root {
+  width: 100%;
+  min-height: calc(100vh - 80px);
+  display: flex;
+  flex-direction: column;
+}
+
+h1 {
+  font-size: 3.2em;
+  line-height: 1.1;
+  background: linear-gradient(90deg, var(--color-accent-cyan), var(--color-accent-purple));
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  text-shadow: 0 0 30px rgba(120, 219, 226, 0.3);
+}
+
+h2, h3, h4, h5, h6 {
+  color: var(--color-text-primary);
+  font-weight: 600;
+}
+
+/* Botones futuristas */
+button {
+  border-radius: 12px;
+  border: 1px solid transparent;
+  padding: 0.8em 1.6em;
+  font-size: 1em;
+  font-weight: 600;
+  font-family: inherit;
+  background: linear-gradient(135deg, var(--color-bg-secondary), var(--color-bg-tertiary));
+  color: var(--color-text-primary);
+  cursor: pointer;
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+button::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(120, 219, 226, 0.2), transparent);
+  transition: left 0.5s;
+}
+
+button:hover::before {
+  left: 100%;
+}
+
+button:hover {
+  border-color: var(--color-accent-cyan);
+  box-shadow: 0 0 20px rgba(120, 219, 226, 0.3);
+  transform: translateY(-2px);
+}
+
+button:focus,
+button:focus-visible {
+  outline: 2px solid var(--color-accent-cyan);
+  outline-offset: 2px;
+  box-shadow: 0 0 15px rgba(120, 219, 226, 0.4);
+}
+
+/* Navbar mejorado */
+.nav-link-azul {
+  color: var(--color-accent-cyan) !important;
+  transition: all 0.3s ease;
+  position: relative;
+}
+
+.nav-link-azul::after {
+  content: '';
+  position: absolute;
+  bottom: -2px;
+  left: 0;
+  width: 0;
+  height: 2px;
+  background: linear-gradient(90deg, var(--color-accent-cyan), var(--color-accent-pink));
+  transition: width 0.3s ease;
+}
+
+.nav-link-azul:hover {
+  color: var(--color-accent-pink) !important;
+  transform: translateY(-1px);
+  text-shadow: 0 0 10px rgba(255, 119, 184, 0.5);
+}
+
+.nav-link-azul:hover::after {
+  width: 100%;
+}
+
+.navbar-brand:hover {
+  color: var(--color-accent-pink) !important;
+  text-shadow: 0 0 15px rgba(255, 119, 184, 0.6);
+}
+
+/* Footer mejorado */
+.footer-link {
+  color: var(--color-accent-cyan);
+  text-decoration: none;
+  transition: all 0.3s ease;
+  position: relative;
+}
+
+.footer-link:hover {
+  color: var(--color-accent-pink);
+  text-shadow: 0 0 8px rgba(255, 119, 184, 0.4);
+}
+
+/* Utilidades futuristas */
 .glass-effect {
-  background: rgba(15, 23, 42, 0.8);
-  backdrop-filter: blur(10px);
+  background: rgba(15, 23, 42, 0.7);
+  backdrop-filter: blur(12px);
   border: 1px solid rgba(120, 219, 226, 0.2);
+  border-radius: 16px;
 }
 
 .gradient-text {
-  background: linear-gradient(90deg, #78dbe2, #ff77b8, #667eea);
+  background: linear-gradient(90deg, var(--color-accent-cyan), var(--color-accent-pink), var(--color-accent-purple));
   background-clip: text;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 }
 
 .neon-glow {
-  box-shadow: 0 0 10px rgba(120, 219, 226, 0.5);
+  box-shadow: 0 0 15px rgba(120, 219, 226, 0.4);
+}
+
+.neon-glow-pink {
+  box-shadow: 0 0 15px rgba(255, 119, 184, 0.4);
 }
 
 /* Animaciones */
 @keyframes pulse {
   0%, 100% {
     opacity: 1;
+    transform: scale(1);
   }
   50% {
-    opacity: 0.5;
+    opacity: 0.7;
+    transform: scale(1.05);
+  }
+}
+
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-5px);
+  }
+}
+
+@keyframes glow {
+  0%, 100% {
+    box-shadow: 0 0 5px rgba(120, 219, 226, 0.5);
+  }
+  50% {
+    box-shadow: 0 0 20px rgba(120, 219, 226, 0.8);
   }
 }
 
 .animate-pulse {
-  animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+  animation: pulse 2s ease-in-out infinite;
+}
+
+.animate-float {
+  animation: float 3s ease-in-out infinite;
+}
+
+.animate-glow {
+  animation: glow 2s ease-in-out infinite;
 }
 
 /* Scrollbar personalizado */
 ::-webkit-scrollbar {
-  width: 8px;
+  width: 10px;
 }
 
 ::-webkit-scrollbar-track {
-  background: #1e293b;
+  background: var(--color-bg-secondary);
+  border-radius: 5px;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: linear-gradient(135deg, #78dbe2, #667eea);
-  border-radius: 4px;
+  background: linear-gradient(135deg, var(--color-accent-cyan), var(--color-accent-purple));
+  border-radius: 5px;
+  border: 2px solid var(--color-bg-secondary);
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: linear-gradient(135deg, #ff77b8, #667eea);
+  background: linear-gradient(135deg, var(--color-accent-pink), var(--color-accent-purple));
+}
+
+/* Modo claro (opcional) */
+@media (prefers-color-scheme: light) {
+  :root {
+    --color-bg-primary: #f8fafc;
+    --color-bg-secondary: #e2e8f0;
+    --color-bg-tertiary: #cbd5e1;
+    --color-text-primary: #0f172a;
+    --color-text-secondary: #334155;
+    --color-text-muted: #64748b;
+  }
+  
+  body {
+    background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 50%, #cbd5e1 100%);
+  }
+  
+  .glass-effect {
+    background: rgba(248, 250, 252, 0.7);
+    border: 1px solid rgba(120, 219, 226, 0.3);
+  }
 }
 
 /* Responsive */
 @media (max-width: 768px) {
-  .container-fluid {
-    padding-left: 15px;
-    padding-right: 15px;
+  body {
+    padding-top: 70px;
   }
+  
+  h1 {
+    font-size: 2.5em;
+  }
+  
+  button {
+    padding: 0.7em 1.4em;
+    font-size: 0.9em;
+  }
+}
+
+/* Efectos de partículas para fondos */
+.bg-particles::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-image: 
+    radial-gradient(circle at 20% 80%, rgba(120, 219, 226, 0.1) 0%, transparent 50%),
+    radial-gradient(circle at 80% 20%, rgba(255, 119, 184, 0.1) 0%, transparent 50%),
+    radial-gradient(circle at 40% 40%, rgba(102, 126, 234, 0.05) 0%, transparent 50%);
+  pointer-events: none;
 }
