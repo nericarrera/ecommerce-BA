@@ -12,7 +12,7 @@ import Pagar from './pages/Pagar'
 import RutaProtegida from './pages/RutaProtegida'
 import IniciarSesion from './pages/IniciarSesion'
 import Perros from './pages/Perros'
-import { AppProvided } from './context/AppContext'
+import { AppProvider } from './context/AppProvider.jsx'
 
 function App() {
   return (
