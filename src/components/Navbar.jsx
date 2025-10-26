@@ -54,7 +54,7 @@ function Navbar() {
           }}
         >
           <FontAwesomeIcon icon={faRobot} className="me-2" style={{ color: "#78dbe2" }} />
-          e-commerce Transfor
+          e-commerce-BA
         </Link>
 
         {/* Botón hamburguesa futurista */}
