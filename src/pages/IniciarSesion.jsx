@@ -1,39 +1,41 @@
-import { useState } from 'react'
-import { useNavigate, useLocation } from 'react-router-dom'
-import { useAppContext } from '../context/AppContext'
+import { useState } from 'react';
+import { useNavigate, useLocation } from 'react-router-dom';
+import { useAppContext } from '../context/AppContext';
 
 function IniciarSesion() {
-  const navigate = useNavigate()
-  const ubicacion = useLocation()
+  const navigate = useNavigate();
+  const location = useLocation();
 
-  const { setIsAuthenticated, setUsuario } = useAppContext()
+  const { setIsAuthenticated, setUsuario } = useAppContext();
 
-  const [formulario, setFormulario] = useState({ nombre: '', email: '' })
+  const [formulario, setFormulario] = useState({ nombre: '', email: '' });
 
   const manejarEnvio = (e) => {
-    e.preventDefault()
-    if (formulario.nombre && formulario.email) {
-      setIsAuthenticated(true)
-      setUsuario(formulario)
+    e.preventDefault();
+    if (formulario.nombre.trim() && formulario.email.trim()) {
+      setIsAuthenticated(true);
+      setUsuario(formulario);
 
-      if (ubicacion.state?.cart) {
-        navigate('/pagar', { state: { cart: ubicacion.state.cart } })
+      if (location.state?.cart) {
+        navigate('/pagar', { state: { cart: location.state.cart } });
       } else {
-        navigate('/')
+        navigate('/');
       }
     } else {
-      alert('Error: Completa todos los datos')
+      alert('Error: Completa todos los campos');
     }
-  }
+  };
 
   return (
-    <div className="d-flex justify-content-center align-items-start">
-      <form 
-        onSubmit={manejarEnvio} 
-        className="bg-white p-4 rounded shadow"
+    <div className="d-flex justify-content-center align-items-start py-5">
+      <form
+        onSubmit={manejarEnvio}
+        className="bg-white p-4 rounded shadow-lg"
         style={{ minWidth: '300px', maxWidth: '400px', width: '90%' }}
       >
-        <h3 className="fw-bold text-primary mb-4 text-center border-bottom pb-2">Iniciar Sesión</h3>
+        <h3 className="fw-bold text-primary mb-4 text-center border-bottom pb-2">
+          Iniciar Sesión
+        </h3>
 
         <div className="mb-3">
           <input
@@ -57,15 +59,19 @@ function IniciarSesion() {
           />
         </div>
 
-        <button type="submit" className="btn btn-success w-100 mb-2">
+        <button type="submit" className="btn btn-success w-100 mb-3 fw-bold">
           Iniciar Sesión
         </button>
-        <button type="button" onClick={() => navigate('/')} className="btn btn-secondary w-100">
+        <button
+          type="button"
+          onClick={() => navigate('/')}
+          className="btn btn-secondary w-100 fw-bold"
+        >
           Cancelar
         </button>
       </form>
     </div>
-  )
+  );
 }
 
-export default IniciarSesion
+export default IniciarSesion;
