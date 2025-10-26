@@ -15,30 +15,25 @@ import Perros from './pages/Perros'
 import { AppProvided } from './context/AppContext'
 
 function App() {
-    
   return (
-    <AppProvided>
+    <AppProvider>
+      <>
+        <Routes>
+          <Route element={<Layout />} >
+            <Route path='/' element={<Inicio />} />
+            <Route path='/servicios' element={<Servicios />} />
+            <Route path='/gatos' element={<Gatos />} />
+            <Route path='/perros' element={<Perros />} />
+            <Route path='/gatos/:id/:nombre' element={<DetalleGatos />} />
+            <Route path='/perros/:id/:nombre' element={<DetallePerros />} />
+            <Route path='/carrito' element={<Carrito />} />
+          </Route>
 
-    <>
-      <Routes>
-        <Route element={<Layout />} >
-          <Route path='/' element={<Inicio />} />
-          <Route path='/servicios' element={<Servicios />} />
-          <Route path='/gatos' element={<Gatos />} />
-          <Route path='/perros' element={<Perros />} />
-          <Route path='/gatos/:id/:nombre' element={<DetalleGatos />} />
-          <Route path='/perros/:id/:nombre' element={<DetallePerros />} />
-          <Route path='/carrito' element={<Carrito />} />
-        </Route>
-
-        <Route path="/iniciar-sesion" element={<IniciarSesion />} />
-
-        <Route path="/pagar" element={<RutaProtegida> <Pagar /> </RutaProtegida>} />
-      </Routes>
-    </>
-
-    </AppProvided>
+          <Route path="/iniciar-sesion" element={<IniciarSesion />} />
+          <Route path="/pagar" element={<RutaProtegida> <Pagar /> </RutaProtegida>} />
+        </Routes>
+      </>
+    </AppProvider>
   )
 }
-
 export default App
