@@ -1,36 +1,34 @@
 import { useState } from "react";
 import { AppContext } from "./AppContext";
 
-export function AppProvider({ children }) {
+export const AppProvider = ({ children }) => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [usuario, setUsuario] = useState({ nombre: "", email: "" });
   const [cart, setCart] = useState([]);
 
-  const addToCart = (gato) => {
-    setCart((prevCart) => {
-      const existingItem = prevCart.find((item) => item.nombre === gato.nombre);
-      if (existingItem) {
-        return prevCart.map((item) =>
-          item.nombre === gato.nombre ? { ...item, quantity: item.quantity + 1 } : item
+  const addToCart = (item) => {
+    setCart((prev) => {
+      const existing = prev.find((i) => i.nombre === item.nombre);
+      if (existing) {
+        return prev.map((i) =>
+          i.nombre === item.nombre ? { ...i, quantity: i.quantity + 1 } : i
         );
-      } else {
-        return [...prevCart, { ...gato, quantity: 1 }];
       }
+      return [...prev, { ...item, quantity: 1 }];
     });
   };
 
-  const clearCart = () => setCart([]);
-
-  const removeFromCart = (indexToRemove) => {
-    setCart((prevCart) =>
-      prevCart
-        .map((item, index) =>
-          index === indexToRemove ? { ...item, quantity: item.quantity - 1 } : item
+  const removeFromCart = (index) => {
+    setCart((prev) =>
+      prev
+        .map((i, idx) =>
+          idx === index ? { ...i, quantity: i.quantity - 1 } : i
         )
-        .filter((item) => item.quantity > 0)
+        .filter((i) => i.quantity > 0)
     );
   };
 
+  const clearCart = () => setCart([]);
   const cerrarSesion = () => {
     setIsAuthenticated(false);
     setUsuario({ nombre: "", email: "" });
@@ -44,9 +42,10 @@ export function AppProvider({ children }) {
     cerrarSesion,
     cart,
     addToCart,
-    clearCart,
     removeFromCart,
+    clearCart,
   };
 
   return <AppContext.Provider value={value}>{children}</AppContext.Provider>;
-}
+};
+
