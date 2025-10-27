@@ -87,7 +87,7 @@ function Inicio() {
                 }}
               >
                 Adopciones
-                <span className="d-block">Transfor</span>
+                <span className="d-block">BA</span>
               </h1>
 
               <h2 
@@ -118,7 +118,7 @@ function Inicio() {
                 }}
               >
                 Adoptar una mascota es darle un hogar lleno de amor y cuidado. 
-                En <strong>Adopciones Transfor</strong> nos dedicamos a crear 
+                En <strong>Adopciones BA</strong> nos dedicamos a crear 
                 conexiones que transforman vidas para siempre.
               </p>
 
