@@ -21,7 +21,7 @@ function Footer() {
     {
       icon: faEnvelope,
       text: "hola@adopcionestransfor.com",
-      link: "mailto:hola@adopcionestransfor.com"
+      link: "mailto:hola@adopcionesBA.com"
     },
     {
       icon: faMapMarkerAlt,
