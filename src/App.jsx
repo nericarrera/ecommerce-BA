@@ -35,7 +35,7 @@ function App() {
       />
       <Routes>
         <Route element={<Layout />} >
-          <Route path='/' element={<Inicio />} />
+          <Route path='/' element={<Home />} />
           <Route path='/mascotas' element={<ProductList />} /> {/* TODAS las mascotas */}
           <Route path='/servicios' element={<Servicios />} />
           <Route path='/gatos' element={<ProductList category="gatos" />} /> {/* Solo gatos */}
