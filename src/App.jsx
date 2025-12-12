@@ -13,6 +13,7 @@ import RutaProtegida from './pages/RutaProtegida'
 import IniciarSesion from './pages/IniciarSesion'
 import Perros from './pages/Perros'
 import { AppProvider } from './context/AppProvider.jsx'
+import Mascotas from './pages/Mascotas.jsx'
 
 function App() {
   return (
@@ -21,6 +22,7 @@ function App() {
         <Routes>
           <Route element={<Layout />} >
             <Route path='/' element={<Inicio />} />
+            <Route path='/mascotas' element= {<Mascotas />}/>
             <Route path='/servicios' element={<Servicios />} />
             <Route path='/gatos' element={<Gatos />} />
             <Route path='/perros' element={<Perros />} />

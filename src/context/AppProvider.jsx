@@ -1,51 +1,51 @@
-import { useState } from "react";
-import { AppContext } from "./AppContext";
+// src/context/AppProvider.jsx
+import React, { useState } from 'react';
+import AppContext from './AppContext';
 
-export const AppProvider = ({ children }) => {
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const [usuario, setUsuario] = useState({ nombre: "", email: "" });
+// Proveedor del contexto
+const AppProvider = ({ children }) => {
   const [cart, setCart] = useState([]);
 
   const addToCart = (item) => {
-    setCart((prev) => {
-      const existing = prev.find((i) => i.nombre === item.nombre);
-      if (existing) {
-        return prev.map((i) =>
-          i.nombre === item.nombre ? { ...i, quantity: i.quantity + 1 } : i
+    console.log('🔵 Agregando al carrito:', item);
+    
+    setCart(prevCart => {
+      // Verificar si el item ya está en el carrito
+      const existingItem = prevCart.find(cartItem => cartItem.id === item.id);
+      
+      if (existingItem) {
+        // Si ya existe, aumentar la cantidad
+        return prevCart.map(cartItem =>
+          cartItem.id === item.id
+            ? { ...cartItem, quantity: cartItem.quantity + 1 }
+            : cartItem
         );
+      } else {
+        // Si no existe, agregarlo con cantidad 1
+        return [...prevCart, { ...item, quantity: 1 }];
       }
-      return [...prev, { ...item, quantity: 1 }];
     });
   };
 
   const removeFromCart = (index) => {
-    setCart((prev) =>
-      prev
-        .map((i, idx) =>
-          idx === index ? { ...i, quantity: i.quantity - 1 } : i
-        )
-        .filter((i) => i.quantity > 0)
-    );
+    setCart(prevCart => prevCart.filter((_, i) => i !== index));
   };
 
-  const clearCart = () => setCart([]);
-  const cerrarSesion = () => {
-    setIsAuthenticated(false);
-    setUsuario({ nombre: "", email: "" });
+  const clearCart = () => {
+    setCart([]);
   };
 
   const value = {
-    isAuthenticated,
-    setIsAuthenticated,
-    usuario,
-    setUsuario,
-    cerrarSesion,
     cart,
     addToCart,
     removeFromCart,
-    clearCart,
+    clearCart
   };
+
+  console.log('🛒 Estado actual del carrito:', cart);
 
   return <AppContext.Provider value={value}>{children}</AppContext.Provider>;
 };
 
+// Exportar SOLO el componente (AppProvider)
+export default AppProvider;

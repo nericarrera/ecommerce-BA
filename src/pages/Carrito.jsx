@@ -1,7 +1,8 @@
+// src/components/Carrito.jsx
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTrash } from "@fortawesome/free-solid-svg-icons";
 import { Link, useNavigate } from "react-router-dom";
-import { useAppContext } from "../context/AppContext";
+import { useAppContext } from "../context"; // ← Esto importa desde src/context/index.js
 
 function Carrito() {
   const { cart, clearCart, removeFromCart } = useAppContext();
@@ -9,7 +10,7 @@ function Carrito() {
 
   // Calcular total
   const total = cart
-    .reduce((acc, item) => acc + item.precio * item.quantity, 0)
+    .reduce((acc, item) => acc + (item.precio || 0) * (item.quantity || 1), 0)
     .toFixed(2);
 
   const irAPagar = () => {
@@ -43,12 +44,12 @@ function Carrito() {
               <div className="cart-items d-flex flex-column gap-3">
                 {cart.map((item, index) => (
                   <div
-                    key={index}
+                    key={`${item.id}-${index}`}
                     className="d-flex align-items-center justify-content-between p-3 rounded border"
                     style={{ backgroundColor: "#f0f4f8" }}
                   >
                     <img
-                      src={item.imagen}
+                      src={item.imagen || 'https://via.placeholder.com/150'}
                       alt={item.nombre}
                       width="60"
                       height="80"
@@ -56,15 +57,16 @@ function Carrito() {
                       style={{ objectFit: "cover" }}
                     />
                     <div className="flex-grow-1">
-                      <strong>{item.nombre}</strong>
-                      <span className="mx-2">x {item.quantity}</span>
+                      <strong>{item.nombre || 'Sin nombre'}</strong>
+                      <span className="mx-2">x {item.quantity || 1}</span>
                     </div>
                     <div className="d-flex align-items-center gap-3">
-                      <span>$ {(item.precio * item.quantity).toFixed(2)}</span>
+                      <span>$ {((item.precio || 0) * (item.quantity || 1)).toFixed(2)}</span>
                       <FontAwesomeIcon
                         icon={faTrash}
                         className="text-danger cursor-pointer"
                         onClick={() => removeFromCart(index)}
+                        style={{ cursor: 'pointer' }}
                       />
                     </div>
                   </div>

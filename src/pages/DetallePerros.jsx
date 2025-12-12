@@ -1,3 +1,4 @@
+// src/pages/DetallePerros.jsx
 import { Link, useParams, useLocation, useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { 
@@ -13,9 +14,9 @@ import {
   faShareAlt,
   faDog
 } from "@fortawesome/free-solid-svg-icons";
-import { useState, useContext } from "react"; // ¡Agregar useContext!
-import { AppContext } from "../context/AppContext"; // ¡Importar el contexto!
-import { toast } from "react-toastify"; // Para las notificaciones
+import { useState } from "react";
+import { useAppContext } from "../context"; // ← Importar desde index.js
+import { toast } from "react-toastify";
 
 const DetallePerros = () => {
   const { id } = useParams();
@@ -24,8 +25,8 @@ const DetallePerros = () => {
   const perro = location.state?.perro;
   const [isFavorite, setIsFavorite] = useState(false);
   
-  // ¡OBTENER addToCart DEL CONTEXTO! ← ESTO ES LO QUE FALTABA
-  const { addToCart } = useContext(AppContext);
+  // OBTENER addToCart DEL CONTEXTO
+  const { addToCart } = useAppContext();
 
   // Datos simulados para características adicionales
   const características = {
@@ -47,21 +48,25 @@ const DetallePerros = () => {
     toast.success(isFavorite ? "Removido de favoritos" : "Agregado a favoritos");
   };
 
-  // ¡CORREGIR ESTA FUNCIÓN!
   const agregarAlCarrito = () => {
-    if (!perro) return;
+    if (!perro) {
+      toast.error('No se encontró información del perro');
+      return;
+    }
+    
+    console.log('🎯 Agregando perro al carrito:', perro);
     
     // Usar addToCart del contexto
-    addToCart(perro);
+    addToCart({
+      ...perro,
+      categoria: 'perro'
+    });
     
     // Mostrar notificación con toast
     toast.success(`¡${perro.nombre} agregado al carrito para adopción! 🐶`, {
       position: "top-right",
       autoClose: 3000,
     });
-    
-    // Opcional: Ir al carrito después de agregar
-    // navigate('/carrito');
   };
 
   if (!perro) {

@@ -1,13 +1,8 @@
-import { createContext, useContext } from "react";
+// src/context/AppContext.jsx
+import React from 'react';
 
-export const AppContext = createContext();
+// Crear el contexto puro
+const AppContext = React.createContext();
 
-export function useAppContext() {
-  const context = useContext(AppContext);
-  if (!context) {
-    throw new Error("useAppContext debe usarse dentro de AppProvider");
-  }
-  return context;
-}
-
-
+// Exportar el contexto como default
+export default AppContext;
