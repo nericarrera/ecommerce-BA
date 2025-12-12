@@ -13,15 +13,15 @@ const IniciarSesion = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     
-    // Login simulado (requerimiento #1)
+    // Login simulado (Requerimiento #1)
     if (email && password) {
-      // Guardar en localStorage
       const userData = {
         nombre: 'Usuario Demo',
         email: email,
         token: 'mock-token-' + Date.now()
       };
       
+      // Guardar en localStorage
       localStorage.setItem('user', JSON.stringify(userData));
       
       // Actualizar contexto
