@@ -167,7 +167,6 @@ function Navbar() {
             <li className="nav-item d-flex align-items-center me-3">
               <div className="position-relative">
                 <FontAwesomeIcon 
-                  icon={faPaw} 
                   className="position-absolute ms-2"
                   style={{ 
                     top: "50%", 
@@ -207,7 +206,6 @@ function Navbar() {
                     e.target.style.border = `1px solid ${selectValue ? "rgba(120, 219, 226, 0.6)" : "rgba(120, 219, 226, 0.3)"}`
                   }}
                 >
-                  <option value="" style={{ background: "#1e293b", color: "#cbd5e1" }}>Explorar ▼</option>
                   <option value="mascotas" style={{ background: "#1e293b", color: "#cbd5e1" }}>
                     🐾 Todas las Mascotas
                   </option>
