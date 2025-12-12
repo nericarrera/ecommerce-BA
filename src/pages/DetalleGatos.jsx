@@ -15,7 +15,7 @@ import {
   faCat
 } from "@fortawesome/free-solid-svg-icons";
 import { useState } from "react";
-import  useAppContext  from "../context/useAppContext"; 
+import { useAppContext } from '../hooks/useAppContext';
 import { toast } from "react-toastify";
 
 const DetalleGatos = () => {

@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import { useAppContext } from "../context/AppContext";
+import { useAppContext } from '../hooks/useAppContext';
 import { toast } from "react-toastify";
 import { 
   FaSearch, 
