@@ -1,77 +1,87 @@
-import { useState } from 'react';
-import { useNavigate, useLocation } from 'react-router-dom';
-import { useAppContext } from '../context/AppContext';
+import { useState, useContext } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { AppContext } from '../context/AppContext';
+import { toast } from 'react-toastify';
+import { FaSignInAlt, FaUser, FaLock } from 'react-icons/fa';
 
-function IniciarSesion() {
+const IniciarSesion = () => {
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const { setIsAuthenticated, setUsuario } = useContext(AppContext);
   const navigate = useNavigate();
-  const location = useLocation();
 
-  const { setIsAuthenticated, setUsuario } = useAppContext();
-
-  const [formulario, setFormulario] = useState({ nombre: '', email: '' });
-
-  const manejarEnvio = (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
-    if (formulario.nombre.trim() && formulario.email.trim()) {
+    
+    // Login simulado (requerimiento #1)
+    if (email && password) {
+      // Guardar en localStorage
+      const userData = {
+        nombre: 'Usuario Demo',
+        email: email,
+        token: 'mock-token-' + Date.now()
+      };
+      
+      localStorage.setItem('user', JSON.stringify(userData));
+      
+      // Actualizar contexto
       setIsAuthenticated(true);
-      setUsuario(formulario);
-
-      if (location.state?.cart) {
-        navigate('/pagar', { state: { cart: location.state.cart } });
-      } else {
-        navigate('/');
-      }
+      setUsuario(userData);
+      
+      toast.success('¡Sesión iniciada correctamente!');
+      navigate('/');
     } else {
-      alert('Error: Completa todos los campos');
+      toast.error('Por favor completa todos los campos');
     }
   };
 
   return (
-    <div className="d-flex justify-content-center align-items-start py-5">
-      <form
-        onSubmit={manejarEnvio}
-        className="bg-white p-4 rounded shadow-lg"
-        style={{ minWidth: '300px', maxWidth: '400px', width: '90%' }}
-      >
-        <h3 className="fw-bold text-primary mb-4 text-center border-bottom pb-2">
-          Iniciar Sesión
-        </h3>
-
-        <div className="mb-3">
-          <input
-            type="text"
-            placeholder="Nombre completo"
-            value={formulario.nombre}
-            onChange={(e) => setFormulario({ ...formulario, nombre: e.target.value })}
-            className="form-control"
-            required
-          />
+    <div className="container mt-5">
+      <div className="row justify-content-center">
+        <div className="col-md-6 col-lg-4">
+          <div className="card shadow">
+            <div className="card-header bg-primary text-white">
+              <h3 className="mb-0"><FaSignInAlt className="me-2" /> Iniciar Sesión</h3>
+            </div>
+            <div className="card-body">
+              <form onSubmit={handleSubmit}>
+                <div className="mb-3">
+                  <label className="form-label">
+                    <FaUser className="me-2" /> Email
+                  </label>
+                  <input
+                    type="email"
+                    className="form-control"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    required
+                  />
+                </div>
+                <div className="mb-3">
+                  <label className="form-label">
+                    <FaLock className="me-2" /> Contraseña
+                  </label>
+                  <input
+                    type="password"
+                    className="form-control"
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    required
+                  />
+                </div>
+                <button type="submit" className="btn btn-primary w-100">
+                  Ingresar
+                </button>
+                <p className="mt-3 text-muted small">
+                  Usuario demo: cualquier email/contraseña funciona
+                </p>
+              </form>
+            </div>
+          </div>
         </div>
-
-        <div className="mb-3">
-          <input
-            type="email"
-            placeholder="Email"
-            value={formulario.email}
-            onChange={(e) => setFormulario({ ...formulario, email: e.target.value })}
-            className="form-control"
-            required
-          />
-        </div>
-
-        <button type="submit" className="btn btn-success w-100 mb-3 fw-bold">
-          Iniciar Sesión
-        </button>
-        <button
-          type="button"
-          onClick={() => navigate('/')}
-          className="btn btn-secondary w-100 fw-bold"
-        >
-          Cancelar
-        </button>
-      </form>
+      </div>
     </div>
   );
-}
+};
 
 export default IniciarSesion;
