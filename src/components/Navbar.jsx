@@ -2,8 +2,7 @@ import { Link, useNavigate, useLocation } from "react-router-dom"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { 
   faHome, 
-  faShoppingCart, 
-  faPaw, 
+  faShoppingCart,  
   faRobot, 
   faCat,
   faDog,
@@ -13,6 +12,7 @@ import {
   faPawAlt,
   faChevronDown  // Agregué este icono que sí usas
 } from "@fortawesome/free-solid-svg-icons"
+import { faPaw } from "@fortawesome/free-solid-svg-icons";
 import "../index.css"
 import { useAppContext } from "../context/useAppContext"
 
