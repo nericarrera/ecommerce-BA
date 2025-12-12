@@ -1,5 +1,104 @@
-// src/context/AppContext.jsx
-import React from 'react';
+import React, { createContext, useState, useCallback } from 'react';
+import { apiService } from '../services/api';
+import { toast } from 'react-toastify';
 
-const AppContext = React.createContext();
+const AppContext = createContext();
+
+export const AppProvider = ({ children }) => {
+  const [carrito, setCarrito] = useState([]);
+  const [mascotas, setMascotas] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [filtro, setFiltro] = useState('');
+
+  const agregarAlCarrito = useCallback((mascota) => {
+    setCarrito(prev => {
+      const existe = prev.find(item => item.id === mascota.id);
+      if (existe) {
+        toast.info(`${mascota.nombre} ya está en el carrito`);
+        return prev;
+      }
+      toast.success(`${mascota.nombre} agregado al carrito`);
+      return [...prev, { ...mascota, cantidad: 1 }];
+    });
+  }, []);
+
+  const eliminarDelCarrito = useCallback((id) => {
+    setCarrito(prev => prev.filter(item => item.id !== id));
+    toast.info('Producto eliminado del carrito');
+  }, []);
+
+  const limpiarCarrito = useCallback(() => {
+    setCarrito([]);
+    toast.info('Carrito vaciado');
+  }, []);
+
+  const calcularTotal = useCallback(() => {
+    return carrito.reduce((total, item) => total + (item.precio * item.cantidad), 0);
+  }, [carrito]);
+
+  const cargarMascotas = useCallback(async () => {
+    setLoading(true);
+    try {
+      const productos = await apiService.getProductos();
+      setMascotas(productos);
+    } catch (error) {
+      console.error('Error cargando mascotas:', error);
+      toast.error('Error al cargar las mascotas');
+    } finally {
+      setLoading(false);
+    }
+  }, []);
+
+  const buscarMascotas = useCallback(async (termino) => {
+    if (!termino.trim()) {
+      await cargarMascotas();
+      return;
+    }
+    setLoading(true);
+    try {
+      const resultados = await apiService.buscarProductos(termino);
+      setMascotas(resultados);
+    } catch (error) {
+      console.error('Error buscando:', error);
+      toast.error('Error en la búsqueda');
+    } finally {
+      setLoading(false);
+    }
+  }, [cargarMascotas]);
+
+  const filtrarPorCategoria = useCallback(async (categoria) => {
+    setLoading(true);
+    try {
+      const resultados = await apiService.getProductosPorCategoria(categoria);
+      setMascotas(resultados);
+    } catch (error) {
+      console.error('Error filtrando:', error);
+      toast.error('Error al filtrar');
+    } finally {
+      setLoading(false);
+    }
+  }, []);
+
+  const value = {
+    carrito,
+    mascotas,
+    loading,
+    filtro,
+    setFiltro,
+    agregarAlCarrito,
+    eliminarDelCarrito,
+    limpiarCarrito,
+    calcularTotal,
+    cargarMascotas,
+    buscarMascotas,
+    filtrarPorCategoria
+  };
+
+  return (
+    <AppContext.Provider value={value}>
+      {children}
+    </AppContext.Provider>
+  );
+};
+
 export default AppContext;

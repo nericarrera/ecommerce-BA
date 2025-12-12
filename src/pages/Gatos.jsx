@@ -1,7 +1,6 @@
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { useAppContext } from "../context/AppContext";
-import { Helmet } from "react-helmet-async";
 import { toast } from "react-toastify";
 import { 
   FaSearch, 
