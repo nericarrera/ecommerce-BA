@@ -1,41 +1,55 @@
+// App.jsx
 import './App.css'
 import { Routes, Route } from 'react-router-dom'
+import { ToastContainer } from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css'
 
 import Layout from './components/Layout'
 import Inicio from './pages/Inicio'
 import Servicios from './pages/Servicios'
-import Gatos from './pages/Gatos'
 import DetalleGatos from './pages/DetalleGatos'
 import DetallePerros from './pages/DetallePerros'
 import Carrito from './pages/Carrito'
 import Pagar from './pages/Pagar'
 import RutaProtegida from './pages/RutaProtegida'
 import IniciarSesion from './pages/IniciarSesion'
-import Perros from './pages/Perros'
 import { AppProvider } from './context/AppProvider.jsx'
-import Mascotas from './pages/Mascotas.jsx'
+
+// Importa los componentes nuevos que creamos
+import ProductList from './components/ProductList'
 
 function App() {
   return (
     <AppProvider>
-      <>
-        <Routes>
-          <Route element={<Layout />} >
-            <Route path='/' element={<Inicio />} />
-            <Route path='/mascotas' element= {<Mascotas />}/>
-            <Route path='/servicios' element={<Servicios />} />
-            <Route path='/gatos' element={<Gatos />} />
-            <Route path='/perros' element={<Perros />} />
-            <Route path='/gatos/:id/:nombre' element={<DetalleGatos />} />
-            <Route path='/perros/:id/:nombre' element={<DetallePerros />} />
-            <Route path='/carrito' element={<Carrito />} />
-          </Route>
+      <ToastContainer 
+        position="top-right"
+        autoClose={3000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="dark"
+      />
+      <Routes>
+        <Route element={<Layout />} >
+          <Route path='/' element={<Inicio />} />
+          <Route path='/mascotas' element={<ProductList />} /> {/* TODAS las mascotas */}
+          <Route path='/servicios' element={<Servicios />} />
+          <Route path='/gatos' element={<ProductList category="gatos" />} /> {/* Solo gatos */}
+          <Route path='/perros' element={<ProductList category="perros" />} /> {/* Solo perros */}
+          <Route path='/gatos/:id' element={<DetalleGatos />} /> {/* Quité /:nombre del path */}
+          <Route path='/perros/:id' element={<DetallePerros />} /> {/* Quité /:nombre del path */}
+          <Route path='/carrito' element={<Carrito />} />
+        </Route>
 
-          <Route path="/iniciar-sesion" element={<IniciarSesion />} />
-          <Route path="/pagar" element={<RutaProtegida> <Pagar /> </RutaProtegida>} />
-        </Routes>
-      </>
+        <Route path="/iniciar-sesion" element={<IniciarSesion />} />
+        <Route path="/pagar" element={<RutaProtegida> <Pagar /> </RutaProtegida>} />
+      </Routes>
     </AppProvider>
   )
 }
+
 export default App
