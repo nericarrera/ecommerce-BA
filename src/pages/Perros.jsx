@@ -13,7 +13,8 @@ import {
   FaChevronRight,
   FaFilter
 } from "react-icons/fa";
-import datosPerros from "../assets/perros.json";
+// ¡IMPORTAR apiService!
+import { apiService } from "../services/api";
 
 const Perros = () => {
   const [perros, setPerros] = useState([]);
@@ -42,25 +43,24 @@ const Perros = () => {
   }, []);
 
   useEffect(() => {
-    // Filtrar en tiempo real según búsqueda
     const filtered = perros.filter(perro =>
       perro.nombre.toLowerCase().includes(searchTerm.toLowerCase()) ||
       perro.descripcion.toLowerCase().includes(searchTerm.toLowerCase()) ||
       perro.raza?.toLowerCase().includes(searchTerm.toLowerCase())
     );
     setFilteredPerros(filtered);
-    setCurrentPage(1); // Resetear a primera página al buscar
+    setCurrentPage(1);
   }, [searchTerm, perros]);
 
+  // ¡CORREGIR ESTA FUNCIÓN!
   const cargarPerros = async () => {
     setCargando(true);
     try {
-      // Por ahora usamos JSON local
-      setTimeout(() => {
-        setPerros(datosPerros.perros);
-        setFilteredPerros(datosPerros.perros);
-        setCargando(false);
-      }, 1000);
+      // ¡USAR apiService!
+      const datos = await apiService.getPerros();
+      setPerros(datos);
+      setFilteredPerros(datos);
+      setCargando(false);
     } catch {
       setError("Error al cargar los perros");
       setCargando(false);
@@ -83,6 +83,7 @@ const Perros = () => {
     return true;
   };
 
+  // ¡CORREGIR ESTA FUNCIÓN!
   const handleSubmitForm = async (e) => {
     e.preventDefault();
     
@@ -90,11 +91,11 @@ const Perros = () => {
     
     try {
       if (selectedPerro) {
-        // Actualizar perro en MockAPI (simulado)
-        toast.success("Perro actualizado (simulado)");
+        // ¡USAR apiService.updatePerro()!
+        await apiService.updatePerro(selectedPerro.id, formData);
       } else {
-        // Crear nuevo perro en MockAPI (simulado)
-        toast.success("Perro agregado (simulado)");
+        // ¡USAR apiService.createPerro()!
+        await apiService.createPerro(formData);
       }
       
       setShowForm(false);
@@ -105,11 +106,17 @@ const Perros = () => {
     }
   };
 
-  const handleDelete = () => {
+  // ¡CORREGIR ESTA FUNCIÓN!
+  const handleDelete = async (id) => {
     // Modal de confirmación (Requerimiento #2)
     if (window.confirm("¿Estás seguro de eliminar este perro de la lista de adopción?")) {
-      toast.success("Perro eliminado (simulado)");
-      cargarPerros();
+      try {
+        // ¡USAR apiService.deletePerro()!
+        await apiService.deletePerro(id);
+        cargarPerros();
+      } catch {
+        toast.error("Error al eliminar");
+      }
     }
   };
 
@@ -357,7 +364,7 @@ const Perros = () => {
                     </button>
                     <button 
                       className="btn btn-danger btn-sm"
-                      onClick={() => handleDelete()}
+                      onClick={() => handleDelete(perro.id)} // ← Pasar el id
                       title="Eliminar"
                       aria-label="Eliminar perro"
                     >

@@ -179,6 +179,60 @@ export const apiService = {
     }
   },
 
+  async createPerro(perroData) {
+  try {
+    // Validación
+    const validation = this.validarProducto(perroData);
+    if (!validation.isValid) {
+      validation.errors.forEach(err => toast.error(err));
+      throw new Error('Validación falló');
+    }
+    
+    // Simulación (para cumplir requisito)
+    console.log('Creando perro (simulado para demo):', perroData);
+    toast.success('Perro agregado exitosamente (modo demo)');
+    
+    // Retornar datos simulados
+    return { 
+      ...perroData, 
+      id: Date.now().toString(),
+      createdAt: new Date().toISOString()
+    };
+  } catch (error) {
+    toast.error('Error al crear perro');
+    throw error;
+  }
+},
+
+async updatePerro(id, perroData) {
+  try {
+    // Validación
+    const validation = this.validarProducto(perroData);
+    if (!validation.isValid) {
+      validation.errors.forEach(err => toast.error(err));
+      throw new Error('Validación falló');
+    }
+    
+    console.log('Actualizando perro (simulado):', id, perroData);
+    toast.success('Perro actualizado (modo demo)');
+    return perroData;
+  } catch (error) {
+    toast.error('Error al actualizar perro');
+    throw error;
+  }
+},
+
+async deletePerro(id) {
+  try {
+    console.log('Eliminando perro (simulado):', id);
+    toast.success('Perro eliminado (modo demo)');
+    return { success: true, id };
+  } catch (error) {
+    toast.error('Error al eliminar perro');
+    throw error;
+  }
+},
+
   // ========== CRUD GENERAL (Requerimiento #2) ==========
   async getProductos() {
     try {
