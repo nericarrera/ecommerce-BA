@@ -1,6 +1,6 @@
 import { useState, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { AppContext } from '../context/AppContext';
+import  AppContext  from '../context/AppContext';
 import { toast } from 'react-toastify';
 import { FaSignInAlt, FaUser, FaLock } from 'react-icons/fa';
 
