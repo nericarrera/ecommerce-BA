@@ -2,7 +2,6 @@ import { Link, useParams, useLocation, useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { 
   faArrowLeft, 
-  faPaw, 
   faHeart, 
   faCalendarAlt,
   faVenusMars,
@@ -11,16 +10,22 @@ import {
   faShieldHeart,
   faStar,
   faShoppingCart,
-  faShareAlt
+  faShareAlt,
+  faDog
 } from "@fortawesome/free-solid-svg-icons";
-import { useState } from "react";
+import { useState, useContext } from "react"; // ¡Agregar useContext!
+import { AppContext } from "../context/AppContext"; // ¡Importar el contexto!
+import { toast } from "react-toastify"; // Para las notificaciones
 
 const DetallePerros = () => {
-  const { id } = useParams(); // Eliminamos 'nombre' ya que no se usa
+  const { id } = useParams();
   const location = useLocation();
   const navigate = useNavigate();
   const perro = location.state?.perro;
   const [isFavorite, setIsFavorite] = useState(false);
+  
+  // ¡OBTENER addToCart DEL CONTEXTO! ← ESTO ES LO QUE FALTABA
+  const { addToCart } = useContext(AppContext);
 
   // Datos simulados para características adicionales
   const características = {
@@ -31,16 +36,32 @@ const DetallePerros = () => {
     raza: "Labrador Mix",
     vacunado: true,
     esterilizado: true,
-    personalidad: ["Juguetón", "Cariñoso", "Inteligente"]
+    personalidad: ["Juguetón", "Cariñoso", "Inteligente", "Leal", "Energético"],
+    nivelEnergia: "Alto",
+    compatibilidad: ["Familias", "Con niños", "Con otros perros", "Activos"],
+    cuidadosEspeciales: "Necesita ejercicio diario"
   };
 
   const toggleFavorite = () => {
     setIsFavorite(!isFavorite);
+    toast.success(isFavorite ? "Removido de favoritos" : "Agregado a favoritos");
   };
 
+  // ¡CORREGIR ESTA FUNCIÓN!
   const agregarAlCarrito = () => {
-    // Aquí iría la lógica para agregar al carrito
-    alert(`¡${perro.nombre} agregado al carrito! 🛒`);
+    if (!perro) return;
+    
+    // Usar addToCart del contexto
+    addToCart(perro);
+    
+    // Mostrar notificación con toast
+    toast.success(`¡${perro.nombre} agregado al carrito para adopción! 🐶`, {
+      position: "top-right",
+      autoClose: 3000,
+    });
+    
+    // Opcional: Ir al carrito después de agregar
+    // navigate('/carrito');
   };
 
   if (!perro) {
@@ -52,7 +73,7 @@ const DetallePerros = () => {
         }}
       >
         <FontAwesomeIcon 
-          icon={faPaw} 
+          icon={faDog} 
           className="mb-4"
           style={{
             fontSize: "4rem",
@@ -63,11 +84,11 @@ const DetallePerros = () => {
           }}
         />
         <h3 className="fw-bold mb-3 gradient-text">
-          Mascota no encontrada
+          Perrito no encontrado
         </h3>
         <p className="mb-4 fs-5" style={{ color: "#cbd5e1", maxWidth: "500px" }}>
-          Lo sentimos, no pudimos encontrar la información de esta mascota. 
-          Puede que haya sido adoptada recientemente.
+          Lo sentimos, no pudimos encontrar la información de este canino. 
+          Puede que haya encontrado un hogar recientemente.
         </p>
         <Link to="/perros" className="text-decoration-none">
           <button 
@@ -87,8 +108,8 @@ const DetallePerros = () => {
               e.target.style.boxShadow = "none";
             }}
           >
-            <FontAwesomeIcon icon={faPaw} className="me-2" />
-            Explorar Otras Mascotas
+            <FontAwesomeIcon icon={faDog} className="me-2" />
+            Explorar Otros Perritos
           </button>
         </Link>
       </div>
@@ -138,7 +159,7 @@ const DetallePerros = () => {
                 }}
               >
                 <FontAwesomeIcon icon={faArrowLeft} className="me-2" />
-                Volver
+                Volver a Perros
               </button>
 
               <div className="d-flex gap-2">
@@ -214,6 +235,22 @@ const DetallePerros = () => {
                 />
                 <span className="small fw-bold text-white">Disponible</span>
               </div>
+
+              {/* Badge especial para perros */}
+              <div 
+                className="position-absolute top-3 end-3 px-3 py-2 rounded-pill d-flex align-items-center"
+                style={{
+                  background: "rgba(102, 126, 234, 0.9)",
+                  backdropFilter: "blur(10px)"
+                }}
+              >
+                <FontAwesomeIcon 
+                  icon={faDog} 
+                  className="me-2"
+                  style={{ color: "#0f172a", fontSize: "0.8rem" }}
+                />
+                <span className="small fw-bold" style={{ color: "#0f172a" }}>Canino</span>
+              </div>
             </div>
           </div>
 
@@ -238,7 +275,7 @@ const DetallePerros = () => {
                 >
                   {perro.nombre}
                 </h1>
-                <p className="mb-3 fs-5" style={{ color: "#78dbe2" }}>
+                <p className="mb-3 fs-5" style={{ color: "#667eea" }}>
                   {características.raza}
                 </p>
                 
@@ -283,7 +320,7 @@ const DetallePerros = () => {
               {/* Características */}
               <div className="mb-4">
                 <h5 className="fw-semibold mb-3" style={{ color: "#e2e8f0" }}>
-                  Características
+                  Características del Perrito
                 </h5>
                 <div className="row g-3">
                   <div className="col-sm-6">
@@ -291,7 +328,7 @@ const DetallePerros = () => {
                       <FontAwesomeIcon 
                         icon={faCalendarAlt} 
                         className="me-3"
-                        style={{ color: "#78dbe2", width: "20px" }}
+                        style={{ color: "#667eea", width: "20px" }}
                       />
                       <div>
                         <div className="small" style={{ color: "#94a3b8" }}>Edad</div>
@@ -304,7 +341,7 @@ const DetallePerros = () => {
                       <FontAwesomeIcon 
                         icon={faVenusMars} 
                         className="me-3"
-                        style={{ color: "#78dbe2", width: "20px" }}
+                        style={{ color: "#667eea", width: "20px" }}
                       />
                       <div>
                         <div className="small" style={{ color: "#94a3b8" }}>Sexo</div>
@@ -317,7 +354,7 @@ const DetallePerros = () => {
                       <FontAwesomeIcon 
                         icon={faWeight} 
                         className="me-3"
-                        style={{ color: "#78dbe2", width: "20px" }}
+                        style={{ color: "#667eea", width: "20px" }}
                       />
                       <div>
                         <div className="small" style={{ color: "#94a3b8" }}>Peso</div>
@@ -330,7 +367,7 @@ const DetallePerros = () => {
                       <FontAwesomeIcon 
                         icon={faRulerVertical} 
                         className="me-3"
-                        style={{ color: "#78dbe2", width: "20px" }}
+                        style={{ color: "#667eea", width: "20px" }}
                       />
                       <div>
                         <div className="small" style={{ color: "#94a3b8" }}>Tamaño</div>
@@ -344,20 +381,65 @@ const DetallePerros = () => {
               {/* Personalidad */}
               <div className="mb-4">
                 <h5 className="fw-semibold mb-3" style={{ color: "#e2e8f0" }}>
-                  Personalidad
+                  Personalidad Canina
                 </h5>
-                <div className="d-flex flex-wrap gap-2">
+                <div className="d-flex flex-wrap gap-2 mb-3">
                   {características.personalidad.map((trait, index) => (
                     <span
                       key={index}
                       className="px-3 py-2 rounded-pill small"
                       style={{
-                        background: "rgba(120, 219, 226, 0.1)",
-                        color: "#78dbe2",
-                        border: "1px solid rgba(120, 219, 226, 0.3)"
+                        background: "rgba(102, 126, 234, 0.1)",
+                        color: "#667eea",
+                        border: "1px solid rgba(102, 126, 234, 0.3)"
                       }}
                     >
                       {trait}
+                    </span>
+                  ))}
+                </div>
+                
+                {/* Nivel de energía */}
+                <div className="mt-3">
+                  <div className="d-flex justify-content-between align-items-center mb-2">
+                    <span className="small" style={{ color: "#94a3b8" }}>Nivel de energía:</span>
+                    <span style={{ color: "#e2e8f0" }}>{características.nivelEnergia}</span>
+                  </div>
+                  <div 
+                    className="progress rounded-pill"
+                    style={{ 
+                      height: "6px",
+                      background: "rgba(30, 41, 59, 0.8)"
+                    }}
+                  >
+                    <div 
+                      className="progress-bar rounded-pill"
+                      style={{ 
+                        width: "80%",
+                        background: "linear-gradient(90deg, #667eea, #78dbe2)"
+                      }}
+                    ></div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Compatibilidad */}
+              <div className="mb-4">
+                <h5 className="fw-semibold mb-3" style={{ color: "#e2e8f0" }}>
+                  Compatibilidad
+                </h5>
+                <div className="d-flex flex-wrap gap-2">
+                  {características.compatibilidad.map((item, index) => (
+                    <span
+                      key={index}
+                      className="px-3 py-2 rounded-pill small"
+                      style={{
+                        background: "rgba(16, 185, 129, 0.1)",
+                        color: "#10b981",
+                        border: "1px solid rgba(16, 185, 129, 0.3)"
+                      }}
+                    >
+                      {item}
                     </span>
                   ))}
                 </div>
@@ -371,7 +453,7 @@ const DetallePerros = () => {
                     <h3 
                       className="fw-bold mb-0"
                       style={{ 
-                        background: "linear-gradient(135deg, #78dbe2, #ff77b8)",
+                        background: "linear-gradient(135deg, #667eea, #ff77b8)",
                         backgroundClip: "text",
                         WebkitBackgroundClip: "text",
                         WebkitTextFillColor: "transparent"
@@ -386,14 +468,14 @@ const DetallePerros = () => {
                       onClick={agregarAlCarrito}
                       className="btn fw-bold px-4 py-3 rounded-pill d-flex align-items-center"
                       style={{
-                        background: "linear-gradient(135deg, #78dbe2, #667eea)",
+                        background: "linear-gradient(135deg, #667eea, #78dbe2)",
                         color: "#0f172a",
                         border: "none",
                         transition: "all 0.3s ease"
                       }}
                       onMouseEnter={(e) => {
                         e.target.style.transform = "translateY(-2px)";
-                        e.target.style.boxShadow = "0 10px 25px rgba(120, 219, 226, 0.4)";
+                        e.target.style.boxShadow = "0 10px 25px rgba(102, 126, 234, 0.4)";
                       }}
                       onMouseLeave={(e) => {
                         e.target.style.transform = "translateY(0)";
@@ -401,7 +483,7 @@ const DetallePerros = () => {
                       }}
                     >
                       <FontAwesomeIcon icon={faShoppingCart} className="me-2" />
-                      Adoptar
+                      Adoptar Perrito
                     </button>
                   </div>
                 </div>
@@ -415,7 +497,7 @@ const DetallePerros = () => {
                       style={{ color: "#10b981" }}
                     />
                     <span className="small" style={{ color: "#94a3b8" }}>
-                      Salud verificada
+                      Salud verificada • {características.cuidadosEspeciales}
                     </span>
                   </div>
                   <span className="small" style={{ color: "#94a3b8" }}>

@@ -13,7 +13,9 @@ import {
   faShareAlt,
   faCat
 } from "@fortawesome/free-solid-svg-icons";
-import { useState } from "react";
+import { useState, useContext } from "react";
+import { AppContext } from "../context/AppContext"; // ¡IMPORTANTE!
+import { toast } from "react-toastify"; // Para las notificaciones
 
 const DetalleGatos = () => {
   const { id } = useParams();
@@ -21,6 +23,9 @@ const DetalleGatos = () => {
   const navigate = useNavigate();
   const gato = location.state?.gato;
   const [isFavorite, setIsFavorite] = useState(false);
+  
+  // ¡AGREGAR EL CONTEXT! ← ESTO ES LO QUE FALTABA
+  const { addToCart } = useContext(AppContext);
 
   // Datos simulados para características adicionales de gatos
   const características = {
@@ -39,10 +44,24 @@ const DetalleGatos = () => {
 
   const toggleFavorite = () => {
     setIsFavorite(!isFavorite);
+    toast.success(isFavorite ? "Removido de favoritos" : "Agregado a favoritos");
   };
 
+  // ¡CORREGIR ESTA FUNCIÓN!
   const agregarAlCarrito = () => {
-    alert(`¡${gato.nombre} agregado al carrito! 🐱`);
+    if (!gato) return;
+    
+    // Usar addToCart del contexto
+    addToCart(gato);
+    
+    // Mostrar notificación con toast
+    toast.success(`¡${gato.nombre} agregado al carrito para adopción! 🐱`, {
+      position: "top-right",
+      autoClose: 3000,
+    });
+    
+    // Opcional: Ir al carrito después de agregar
+    // navigate('/carrito');
   };
 
   if (!gato) {
