@@ -37,6 +37,29 @@ const Perros = () => {
   const { addToCart, isAuthenticated } = useAppContext();
   const itemsPerPage = 6;
 
+  // ====== AGREGADO: useEffect para el título de la página ======
+  useEffect(() => {
+    document.title = "Perros en Adopción - Hogar de Mascotas";
+    
+    // Actualizar meta description
+    const metaDescription = document.querySelector('meta[name="description"]');
+    if (metaDescription) {
+      metaDescription.setAttribute('content', 'Encuentra perritos en adopción responsable. Dale un hogar a un amigo fiel.');
+    } else {
+      const meta = document.createElement('meta');
+      meta.name = 'description';
+      meta.content = 'Encuentra perritos en adopción responsable. Dale un hogar a un amigo fiel.';
+      document.head.appendChild(meta);
+    }
+    
+    // Actualizar meta keywords
+    const metaKeywords = document.querySelector('meta[name="keywords"]');
+    if (metaKeywords) {
+      metaKeywords.setAttribute('content', 'perros, adopción, mascotas, animales, hogar');
+    }
+  }, []);
+  // ====== FIN DEL AGREGADO ======
+
   useEffect(() => {
     cargarPerros();
   }, []);
@@ -166,11 +189,8 @@ const Perros = () => {
 
   return (
     <div className="container py-4">
-      <Helmet>
-        <title>Perros en Adopción - Hogar de Mascotas</title>
-        <meta name="description" content="Encuentra perritos en adopción responsable. Dale un hogar a un amigo fiel." />
-        <meta name="keywords" content="perros, adopción, mascotas, animales, hogar" />
-      </Helmet>
+      {/* ELIMINADO: Componente Helmet */}
+      {/* <Helmet> ... </Helmet> */}
 
       <h4 className="text-center mb-4 p-3 rounded fw-bold"
           style={{ backgroundColor: "#FFF3E0", color: "#E65100" }}>

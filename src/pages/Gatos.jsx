@@ -36,6 +36,29 @@ const Gatos = () => {
   const { addToCart, isAuthenticated } = useAppContext();
   const itemsPerPage = 6;
 
+  // ====== AGREGADO: useEffect para el título de la página ======
+  useEffect(() => {
+    document.title = "Gatos en Adopción - Hogar de Mascotas";
+    
+    // Actualizar meta description
+    const metaDescription = document.querySelector('meta[name="description"]');
+    if (metaDescription) {
+      metaDescription.setAttribute('content', 'Encuentra gatitos en adopción responsable. Dale un hogar amoroso a un felino.');
+    } else {
+      const meta = document.createElement('meta');
+      meta.name = 'description';
+      meta.content = 'Encuentra gatitos en adopción responsable. Dale un hogar amoroso a un felino.';
+      document.head.appendChild(meta);
+    }
+    
+    // Actualizar meta keywords
+    const metaKeywords = document.querySelector('meta[name="keywords"]');
+    if (metaKeywords) {
+      metaKeywords.setAttribute('content', 'gatos, adopción, mascotas, felinos, hogar');
+    }
+  }, []);
+  // ====== FIN DEL AGREGADO ======
+
   useEffect(() => {
     cargarGatos();
   }, []);
@@ -154,11 +177,8 @@ const Gatos = () => {
 
   return (
     <div className="container py-4">
-      <Helmet>
-        <title>Gatos en Adopción - Hogar de Mascotas</title>
-        <meta name="description" content="Encuentra gatitos en adopción responsable. Dale un hogar amoroso a un felino." />
-        <meta name="keywords" content="gatos, adopción, mascotas, felinos, hogar" />
-      </Helmet>
+      {/* ELIMINADO: Componente Helmet */}
+      {/* <Helmet> ... </Helmet> */}
 
       <h4 className="text-center mb-4 p-3 rounded fw-bold"
           style={{ backgroundColor: "#FFEBEE", color: "#C62828" }}>
