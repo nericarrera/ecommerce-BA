@@ -1,7 +1,7 @@
 import Navbar from './Navbar'
 import Footer from './Footer'
 import { Outlet } from 'react-router-dom'
-import { useAppContext } from "../context/AppContext"
+import { useAppContext } from "./context"
 
 function Layout() {
 

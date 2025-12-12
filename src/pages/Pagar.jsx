@@ -1,5 +1,5 @@
 import { useNavigate } from "react-router-dom";
-import { useAppContext } from "../context/AppContext";
+import { useAppContext } from "./context";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { 
   faCreditCard, 

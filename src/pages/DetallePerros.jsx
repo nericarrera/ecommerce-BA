@@ -15,7 +15,7 @@ import {
   faDog
 } from "@fortawesome/free-solid-svg-icons";
 import { useState } from "react";
-import { useAppContext } from "../context"; // ← Importar desde index.js
+import { useAppContext } from "../context"; 
 import { toast } from "react-toastify";
 
 const DetallePerros = () => {

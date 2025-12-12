@@ -14,7 +14,7 @@ import {
   faChevronDown  // Agregué este icono que sí usas
 } from "@fortawesome/free-solid-svg-icons"
 import "../index.css"
-import { useAppContext } from "../context/AppContext"
+import { useAppContext } from "./context"
 
 function Navbar() {
   const navigate = useNavigate()

@@ -13,7 +13,7 @@ import Carrito from './pages/Carrito'
 import Pagar from './pages/Pagar'
 import RutaProtegida from './pages/RutaProtegida'
 import IniciarSesion from './pages/IniciarSesion'
-import { AppProvider } from './context/AppProvider.jsx'
+import { AppProvider } from '../context'
 
 // Importa los componentes nuevos que creamos
 import ProductList from './components/ProductList'
