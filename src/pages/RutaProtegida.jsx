@@ -1,17 +1,18 @@
-import { Navigate, useLocation } from 'react-router-dom'
-import { useAppContext } from '../context/AppContext'
+import { useContext } from 'react';
+import { Navigate } from 'react-router-dom';
+import { AppContext } from '../context/AppContext';
 
-function RutaProtegida({ children }) {
-
-  const { isAuthenticated } = useAppContext()
-
-  const location = useLocation()
- 
+const RutaProtegida = ({ children }) => {
+  const { isAuthenticated } = useContext(AppContext);
+  
+  // Verificar si el usuario está autenticado
   if (!isAuthenticated) {
-    // Pasa el state actual (que contiene el carrito) a /login
-    return <Navigate to="/iniciar-sesion" state={location.state} replace />
+    // Si no está autenticado, redirigir al login
+    return <Navigate to="/iniciar-sesion" replace />;
   }
-  return children
-}
+  
+  // Si está autenticado, mostrar el contenido protegido
+  return children;
+};
 
-export default RutaProtegida
+export default RutaProtegida;
