@@ -1,13 +1,13 @@
-import { useState, useContext } from 'react';
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import  AppContext  from '../context/AppContext';
+import { useAppContext } from '../hooks/useAppContext'; // Importa el hook
 import { toast } from 'react-toastify';
 import { FaSignInAlt, FaUser, FaLock } from 'react-icons/fa';
 
 const IniciarSesion = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const { setIsAuthenticated, setUsuario } = useContext(AppContext);
+  const { setIsAuthenticated, setUsuario } = useAppContext(); // Usa el hook
   const navigate = useNavigate();
 
   const handleSubmit = (e) => {

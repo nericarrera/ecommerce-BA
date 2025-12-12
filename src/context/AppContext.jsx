@@ -9,8 +9,22 @@ export const AppProvider = ({ children }) => {
   const [mascotas, setMascotas] = useState([]);
   const [loading, setLoading] = useState(false);
   const [filtro, setFiltro] = useState('');
+  
+  // ===== AGREGADO: Estados de autenticación =====
+  const [isAuthenticated, setIsAuthenticated] = useState(() => {
+    // Verificar si hay usuario en localStorage al iniciar
+    const user = localStorage.getItem('user');
+    return !!user;
+  });
+  
+  const [usuario, setUsuario] = useState(() => {
+    const user = localStorage.getItem('user');
+    return user ? JSON.parse(user) : null;
+  });
+  // ===== FIN DEL AGREGADO =====
 
-  const agregarAlCarrito = useCallback((mascota) => {
+  // Agregar al carrito
+  const addToCart = useCallback((mascota) => {
     setCarrito(prev => {
       const existe = prev.find(item => item.id === mascota.id);
       if (existe) {
@@ -49,35 +63,14 @@ export const AppProvider = ({ children }) => {
     }
   }, []);
 
-  const buscarMascotas = useCallback(async (termino) => {
-    if (!termino.trim()) {
-      await cargarMascotas();
-      return;
-    }
-    setLoading(true);
-    try {
-      const resultados = await apiService.buscarProductos(termino);
-      setMascotas(resultados);
-    } catch (error) {
-      console.error('Error buscando:', error);
-      toast.error('Error en la búsqueda');
-    } finally {
-      setLoading(false);
-    }
-  }, [cargarMascotas]);
-
-  const filtrarPorCategoria = useCallback(async (categoria) => {
-    setLoading(true);
-    try {
-      const resultados = await apiService.getProductosPorCategoria(categoria);
-      setMascotas(resultados);
-    } catch (error) {
-      console.error('Error filtrando:', error);
-      toast.error('Error al filtrar');
-    } finally {
-      setLoading(false);
-    }
+  // ===== AGREGADO: Función para cerrar sesión =====
+  const logout = useCallback(() => {
+    localStorage.removeItem('user');
+    setIsAuthenticated(false);
+    setUsuario(null);
+    toast.info('Sesión cerrada');
   }, []);
+  // ===== FIN DEL AGREGADO =====
 
   const value = {
     carrito,
@@ -85,13 +78,19 @@ export const AppProvider = ({ children }) => {
     loading,
     filtro,
     setFiltro,
-    agregarAlCarrito,
+    addToCart,
     eliminarDelCarrito,
     limpiarCarrito,
     calcularTotal,
     cargarMascotas,
-    buscarMascotas,
-    filtrarPorCategoria
+    
+    // ===== AGREGADO: Funciones de autenticación =====
+    isAuthenticated,
+    setIsAuthenticated,
+    usuario,
+    setUsuario,
+    logout
+    // ===== FIN DEL AGREGADO =====
   };
 
   return (
