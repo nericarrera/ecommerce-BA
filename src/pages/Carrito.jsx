@@ -2,7 +2,7 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTrash } from "@fortawesome/free-solid-svg-icons";
 import { Link, useNavigate } from "react-router-dom";
-import { useAppContext } from "../context"; 
+import { useAppContext } from "../context/useAppContext"; 
 
 function Carrito() {
   const { cart, clearCart, removeFromCart } = useAppContext();
