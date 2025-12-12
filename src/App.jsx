@@ -18,8 +18,8 @@ function App() {
         <Route element={<Layout />} >
           <Route path='/' element={<Inicio />} />
           <Route path='/servicios' element={<Servicios />} />
-          <Route path='/gatos' element={<Inicio />} /> {/* O crea página específica */}
-          <Route path='/perros' element={<Inicio />} /> {/* O crea página específica */}
+          <Route path='/gatos' element={<Inicio />} />
+          <Route path='/perros' element={<Inicio />} />
           <Route path='/gatos/:id' element={<DetalleGatos />} />
           <Route path='/perros/:id' element={<DetallePerros />} />
           <Route path='/carrito' element={<Carrito />} />
