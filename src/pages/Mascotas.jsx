@@ -27,6 +27,30 @@ const Mascotas = () => {
 
   const { addToCart } = useAppContext();
 
+  // ====== AGREGADO: useEffect para el título de la página ======
+  useEffect(() => {
+    document.title = "Todas las Mascotas en Adopción - Hogar de Mascotas";
+    
+    // Opcional: también puedes actualizar la meta description
+    const metaDescription = document.querySelector('meta[name="description"]');
+    if (metaDescription) {
+      metaDescription.setAttribute('content', 'Encuentra gatos y perros en adopción responsable. Dale un hogar amoroso a una mascota.');
+    } else {
+      // Crear el meta tag si no existe
+      const meta = document.createElement('meta');
+      meta.name = 'description';
+      meta.content = 'Encuentra gatos y perros en adopción responsable. Dale un hogar amoroso a una mascota.';
+      document.head.appendChild(meta);
+    }
+    
+    // Opcional: keywords
+    const metaKeywords = document.querySelector('meta[name="keywords"]');
+    if (metaKeywords) {
+      metaKeywords.setAttribute('content', 'mascotas, adopción, gatos, perros, animales, hogar');
+    }
+  }, []);
+  // ====== FIN DEL AGREGADO ======
+
   useEffect(() => {
     cargarMascotas();
   }, []);
@@ -120,11 +144,8 @@ const Mascotas = () => {
 
   return (
     <div className="container py-4">
-      <Helmet>
-        <title>Todas las Mascotas en Adopción - Hogar de Mascotas</title>
-        <meta name="description" content="Encuentra gatos y perros en adopción responsable. Dale un hogar amoroso a una mascota." />
-        <meta name="keywords" content="mascotas, adopción, gatos, perros, animales, hogar" />
-      </Helmet>
+      {/* ELIMINADO: Componente Helmet */}
+      {/* <Helmet> ... </Helmet> */}
 
       {/* Header con estadísticas */}
       <div className="text-center mb-5">
