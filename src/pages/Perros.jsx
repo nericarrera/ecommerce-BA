@@ -1,4 +1,4 @@
-import { useState, useEffect, useContext } from "react";
+import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { useAppContext } from "../context/AppContext";
 import { Helmet } from "react-helmet-async";
@@ -14,7 +14,6 @@ import {
   FaFilter
 } from "react-icons/fa";
 import datosPerros from "../assets/perros.json";
-import { apiService } from "../services/api";
 
 const Perros = () => {
   const [perros, setPerros] = useState([]);
@@ -56,17 +55,13 @@ const Perros = () => {
   const cargarPerros = async () => {
     setCargando(true);
     try {
-      // Usar MockAPI si quieres, o JSON local
-      // const datos = await apiService.getPerros();
-      // setPerros(datos);
-      
       // Por ahora usamos JSON local
       setTimeout(() => {
         setPerros(datosPerros.perros);
         setFilteredPerros(datosPerros.perros);
         setCargando(false);
       }, 1000);
-    } catch (err) {
+    } catch {
       setError("Error al cargar los perros");
       setCargando(false);
       toast.error("Error al cargar datos");
@@ -82,7 +77,7 @@ const Perros = () => {
     if (formData.descripcion.length < 10) errors.push("Descripción mínimo 10 caracteres");
     
     if (errors.length > 0) {
-      errors.forEach(error => toast.error(error));
+      errors.forEach(err => toast.error(err));
       return false;
     }
     return true;
@@ -95,27 +90,24 @@ const Perros = () => {
     
     try {
       if (selectedPerro) {
-        // Actualizar perro en MockAPI
-        // await apiService.updatePerro(selectedPerro.id, formData);
+        // Actualizar perro en MockAPI (simulado)
         toast.success("Perro actualizado (simulado)");
       } else {
-        // Crear nuevo perro en MockAPI
-        // await apiService.createPerro(formData);
+        // Crear nuevo perro en MockAPI (simulado)
         toast.success("Perro agregado (simulado)");
       }
       
       setShowForm(false);
       cargarPerros(); // Recargar lista
       resetForm();
-    } catch (error) {
+    } catch {
       toast.error("Error al guardar");
     }
   };
 
-  const handleDelete = (id) => {
+  const handleDelete = () => {
     // Modal de confirmación (Requerimiento #2)
     if (window.confirm("¿Estás seguro de eliminar este perro de la lista de adopción?")) {
-      // await apiService.deletePerro(id);
       toast.success("Perro eliminado (simulado)");
       cargarPerros();
     }
@@ -365,7 +357,7 @@ const Perros = () => {
                     </button>
                     <button 
                       className="btn btn-danger btn-sm"
-                      onClick={() => handleDelete(perro.id)}
+                      onClick={() => handleDelete()}
                       title="Eliminar"
                       aria-label="Eliminar perro"
                     >
@@ -408,8 +400,6 @@ const Perros = () => {
           ))}
         </ul>
       )}
-
-      {/* Toastify ya está configurado en App.jsx */}
     </div>
   );
 };

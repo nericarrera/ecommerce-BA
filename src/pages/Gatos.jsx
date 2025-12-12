@@ -1,4 +1,4 @@
-import { useState, useEffect, useContext } from "react";
+import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { useAppContext } from "../context/AppContext";
 import { Helmet } from "react-helmet-async";
@@ -53,11 +53,11 @@ const Gatos = () => {
   const cargarGatos = async () => {
     setCargando(true);
     try {
-      const datos = await apiService.getGatos(); // Desde MockAPI
+      const datos = await apiService.getGatos();
       setGatos(datos);
       setFilteredGatos(datos);
       setCargando(false);
-    } catch (err) {
+    } catch {
       setError("Error al cargar los gatos");
       setCargando(false);
       toast.error("Error al cargar datos de gatos");
@@ -93,7 +93,7 @@ const Gatos = () => {
       setShowForm(false);
       cargarGatos();
       resetForm();
-    } catch (error) {
+    } catch {
       toast.error("Error al guardar");
     }
   };
@@ -103,7 +103,7 @@ const Gatos = () => {
       try {
         await apiService.deleteGato(id);
         cargarGatos();
-      } catch (error) {
+      } catch {
         toast.error("Error al eliminar");
       }
     }
@@ -220,7 +220,6 @@ const Gatos = () => {
           </div>
           <div className="card-body">
             <form onSubmit={handleSubmitForm}>
-              {/* Mismo formulario que perros pero adaptado */}
               <div className="row">
                 <div className="col-md-6 mb-3">
                   <label className="form-label">Nombre *</label>
