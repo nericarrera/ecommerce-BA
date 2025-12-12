@@ -9,10 +9,9 @@ import {
   faUsers,
   faSignInAlt,
   faSignOutAlt,
-  faPawAlt,
+  faPaw,
   faChevronDown  // Agregué este icono que sí usas
 } from "@fortawesome/free-solid-svg-icons"
-import { faPaw } from "@fortawesome/free-solid-svg-icons";
 import "../index.css"
 import { useAppContext } from "../context/useAppContext"
 
@@ -168,7 +167,7 @@ function Navbar() {
             <li className="nav-item d-flex align-items-center me-3">
               <div className="position-relative">
                 <FontAwesomeIcon 
-                  icon={faPawAlt} 
+                  icon={faPaw} 
                   className="position-absolute ms-2"
                   style={{ 
                     top: "50%", 
