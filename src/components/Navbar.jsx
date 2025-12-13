@@ -10,7 +10,7 @@ import {
   faSignInAlt,
   faSignOutAlt,
   faPaw,
-  faChevronDown  // Agregué este icono que sí usas
+  faChevronDown
 } from "@fortawesome/free-solid-svg-icons"
 import "../index.css"
 import { useAppContext } from '../hooks/useAppContext';
@@ -18,7 +18,7 @@ import { useAppContext } from '../hooks/useAppContext';
 function Navbar() {
   const navigate = useNavigate()
   const location = useLocation()
-  const { isAuthenticated, usuario, cart, cerrarSesion } = useAppContext()
+  const { isAuthenticated, usuario, carrito, logout } = useAppContext()
 
   // Determinar valor del select basado en la ruta actual
   let selectValue = ""
@@ -28,7 +28,10 @@ function Navbar() {
   else if (location.pathname === "/servicios") selectValue = "servicios"
   else selectValue = ""
 
-  const totalProductos = cart.reduce((total, item) => total + item.quantity, 0)
+  // CORRECCIÓN: Verificar que carrito existe y es un array antes de usar .reduce()
+  const totalProductos = carrito && Array.isArray(carrito) 
+    ? carrito.reduce((total, item) => total + (item.quantity || 1), 0)
+    : 0
 
   const handleSelectChange = (e) => {
     const value = e.target.value
@@ -167,6 +170,7 @@ function Navbar() {
             <li className="nav-item d-flex align-items-center me-3">
               <div className="position-relative">
                 <FontAwesomeIcon 
+                  
                   className="position-absolute ms-2"
                   style={{ 
                     top: "50%", 
@@ -206,6 +210,9 @@ function Navbar() {
                     e.target.style.border = `1px solid ${selectValue ? "rgba(120, 219, 226, 0.6)" : "rgba(120, 219, 226, 0.3)"}`
                   }}
                 >
+                  <option value="" style={{ background: "#1e293b", color: "#cbd5e1" }}>
+                    🚀 Navegar
+                  </option>
                   <option value="mascotas" style={{ background: "#1e293b", color: "#cbd5e1" }}>
                     🐾 Todas las Mascotas
                   </option>
@@ -219,7 +226,7 @@ function Navbar() {
                     ⚙️ Servicios
                   </option>
                 </select>
-                {/* Flecha personalizada - AHORA usa faChevronDown que está importado */}
+                {/* Flecha personalizada */}
                 <FontAwesomeIcon 
                   icon={faChevronDown} 
                   className="position-absolute"
@@ -398,7 +405,7 @@ function Navbar() {
                 }}
               >
                 <FontAwesomeIcon icon={faShoppingCart} size="lg" />
-                {cart && cart.length > 0 && (
+                {carrito && carrito.length > 0 && (
                   <span
                     className="position-absolute top-0 start-100 translate-middle badge rounded-pill pulse-animation"
                     style={{ 
@@ -427,17 +434,17 @@ function Navbar() {
                         lineHeight: "1.2"
                       }}
                     >
-                      👋 Hola, {usuario.nombre || "Usuario"}!
+                      👋 Hola, {usuario?.nombre || "Usuario"}!
                     </span>
                     <small 
                       className="text-muted"
                       style={{ fontSize: "0.7rem" }}
                     >
-                      {usuario.email || ""}
+                      {usuario?.email || ""}
                     </small>
                   </div>
                   <button
-                    onClick={cerrarSesion}
+                    onClick={logout}
                     className="btn btn-link ms-3 d-flex align-items-center"
                     style={{ 
                       textDecoration: "none",
