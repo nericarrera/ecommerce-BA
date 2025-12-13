@@ -1,4 +1,4 @@
-// src/pages/DetalleGatos.jsx
+
 import { Link, useParams, useLocation, useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { 
@@ -28,7 +28,7 @@ const DetalleGatos = () => {
   // AGREGAR EL CONTEXTO
   const { addToCart } = useAppContext();
 
-  // Datos simulados para características adicionales de gatos
+ 
   const características = {
     edad: "1.5 años",
     sexo: "Hembra",
@@ -56,7 +56,7 @@ const DetalleGatos = () => {
     
     console.log('🎯 Agregando gato al carrito:', gato);
     
-    // Usar addToCart del contexto
+   
     addToCart({
       ...gato,
       categoria: 'gato'
@@ -128,7 +128,7 @@ const DetalleGatos = () => {
         background: "linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #334155 100%)",
       }}
     >
-      {/* Efecto de partículas de fondo */}
+     
       <div 
         className="position-absolute top-0 left-0 w-100 h-100"
         style={{

@@ -28,7 +28,7 @@ const DetallePerros = () => {
   // OBTENER addToCart DEL CONTEXTO
   const { addToCart } = useAppContext();
 
-  // Datos simulados para características adicionales
+  
   const características = {
     edad: "2 años",
     sexo: "Macho",
@@ -56,13 +56,13 @@ const DetallePerros = () => {
     
     console.log('🎯 Agregando perro al carrito:', perro);
     
-    // Usar addToCart del contexto
+    
     addToCart({
       ...perro,
       categoria: 'perro'
     });
     
-    // Mostrar notificación con toast
+
     toast.success(`¡${perro.nombre} agregado al carrito para adopción! 🐶`, {
       position: "top-right",
       autoClose: 3000,

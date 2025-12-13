@@ -36,7 +36,7 @@ const Gatos = () => {
   const { addToCart, isAuthenticated } = useAppContext();
   const itemsPerPage = 6;
 
-  // ====== AGREGADO: useEffect para el título de la página ======
+ 
   useEffect(() => {
     document.title = "Gatos en Adopción - Hogar de Mascotas";
     
@@ -57,7 +57,7 @@ const Gatos = () => {
       metaKeywords.setAttribute('content', 'gatos, adopción, mascotas, felinos, hogar');
     }
   }, []);
-  // ====== FIN DEL AGREGADO ======
+ 
 
   useEffect(() => {
     cargarGatos();
