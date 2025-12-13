@@ -23,20 +23,27 @@ function App() {
       <Routes>
         <Route element={<Layout />} >
           <Route path='/' element={<Inicio />} />
-          <Route path='/mascotas' element={<Mascotas />} /> {/* ← Página Mascotas */}
+          <Route path='/mascotas' element={<Mascotas />} />
           <Route path='/servicios' element={<Servicios />} />
-          <Route path='/gatos' element={<Gatos />} /> {/* ← Página Gatos */}
-          <Route path='/perros' element={<Perros />} /> {/* ← Página Perros */}
-          <Route path='/gatos/:id' element={<DetalleGatos />} />
-          <Route path='/perros/:id' element={<DetallePerros />} />
+          <Route path='/gatos' element={<Gatos />} />
+          <Route path='/perros' element={<Perros />} />
+          <Route path='/gatos/:id/:nombre?' element={<DetalleGatos />} /> {/* Agregado :nombre opcional */}
+          <Route path='/perros/:id/:nombre?' element={<DetallePerros />} /> {/* Agregado :nombre opcional */}
           <Route path='/carrito' element={<Carrito />} />
+          <Route path='/iniciar-sesion' element={<IniciarSesion />} /> {/* ¡AGREGADO dentro de Layout! */}
         </Route>
 
-        <Route path="/iniciar-sesion" element={<IniciarSesion />} />
-        <Route path="/pagar" element={<RutaProtegida> <Pagar /> </RutaProtegida>} />
+        {/* Rutas separadas (sin Layout si es necesario) */}
+        <Route path="/pagar" element={
+          <RutaProtegida>
+            <Layout> {/* Opcional: si quieres que Pagar tenga Layout */}
+              <Pagar />
+            </Layout>
+          </RutaProtegida>
+        } />
       </Routes>
     </>
   )
 }
 
-export default App
+export default App;
