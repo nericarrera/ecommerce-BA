@@ -10,9 +10,8 @@ export const AppProvider = ({ children }) => {
   const [loading, setLoading] = useState(false);
   const [filtro, setFiltro] = useState('');
   
-  // ===== AGREGADO: Estados de autenticación =====
+  // Estados de autenticación
   const [isAuthenticated, setIsAuthenticated] = useState(() => {
-    // Verificar si hay usuario en localStorage al iniciar
     const user = localStorage.getItem('user');
     return !!user;
   });
@@ -21,11 +20,12 @@ export const AppProvider = ({ children }) => {
     const user = localStorage.getItem('user');
     return user ? JSON.parse(user) : null;
   });
-  // ===== FIN DEL AGREGADO =====
 
-  // Agregar al carrito
+  // Agregar al carrito - CORREGIDO: usa addToCart (no agregarAlCarrito)
   const addToCart = useCallback((mascota) => {
     setCarrito(prev => {
+      if (!prev) return [{ ...mascota, cantidad: 1 }];
+      
       const existe = prev.find(item => item.id === mascota.id);
       if (existe) {
         toast.info(`${mascota.nombre} ya está en el carrito`);
@@ -37,7 +37,10 @@ export const AppProvider = ({ children }) => {
   }, []);
 
   const eliminarDelCarrito = useCallback((id) => {
-    setCarrito(prev => prev.filter(item => item.id !== id));
+    setCarrito(prev => {
+      if (!prev) return [];
+      return prev.filter(item => item.id !== id);
+    });
     toast.info('Producto eliminado del carrito');
   }, []);
 
@@ -47,7 +50,12 @@ export const AppProvider = ({ children }) => {
   }, []);
 
   const calcularTotal = useCallback(() => {
-    return carrito.reduce((total, item) => total + (item.precio * item.cantidad), 0);
+    if (!carrito || carrito.length === 0) return 0;
+    return carrito.reduce((total, item) => {
+      const precio = item.precio || 0;
+      const cantidad = item.cantidad || 1;
+      return total + (precio * cantidad);
+    }, 0);
   }, [carrito]);
 
   const cargarMascotas = useCallback(async () => {
@@ -63,34 +71,73 @@ export const AppProvider = ({ children }) => {
     }
   }, []);
 
-  // ===== AGREGADO: Función para cerrar sesión =====
+  const buscarMascotas = useCallback(async (termino) => {
+    if (!termino.trim()) {
+      await cargarMascotas();
+      return;
+    }
+    setLoading(true);
+    try {
+      const resultados = await apiService.buscarProductos(termino);
+      setMascotas(resultados);
+    } catch (error) {
+      console.error('Error buscando:', error);
+      toast.error('Error en la búsqueda');
+    } finally {
+      setLoading(false);
+    }
+  }, [cargarMascotas]);
+
+  const filtrarPorCategoria = useCallback(async (categoria) => {
+    setLoading(true);
+    try {
+      const resultados = await apiService.getProductosPorCategoria(categoria);
+      setMascotas(resultados);
+    } catch (error) {
+      console.error('Error filtrando:', error);
+      toast.error('Error al filtrar');
+    } finally {
+      setLoading(false);
+    }
+  }, []);
+
   const logout = useCallback(() => {
     localStorage.removeItem('user');
     setIsAuthenticated(false);
     setUsuario(null);
     toast.info('Sesión cerrada');
   }, []);
-  // ===== FIN DEL AGREGADO =====
 
   const value = {
+    // Estados
     carrito,
     mascotas,
     loading,
     filtro,
+    isAuthenticated,
+    usuario,
+    
+    // Funciones para modificar estados
+    setCarrito,
+    setMascotas,
+    setLoading,
     setFiltro,
-    addToCart,
+    setIsAuthenticated,
+    setUsuario,
+    
+    // Funciones del carrito
+    addToCart,           // ¡IMPORTANTE! Esto se usa en Gatos.jsx, Perros.jsx, etc.
     eliminarDelCarrito,
     limpiarCarrito,
     calcularTotal,
-    cargarMascotas,
     
-    // ===== AGREGADO: Funciones de autenticación =====
-    isAuthenticated,
-    setIsAuthenticated,
-    usuario,
-    setUsuario,
+    // Funciones de mascotas
+    cargarMascotas,
+    buscarMascotas,
+    filtrarPorCategoria,
+    
+    // Autenticación
     logout
-    // ===== FIN DEL AGREGADO =====
   };
 
   return (
